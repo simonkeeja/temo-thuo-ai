@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: temo-thuo-ai
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_SUPABASE_URL
+        value: https://zybkhpxsvxllurktldjv.supabase.co
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_APP_ID
+        value: app-e6n6zaspjytd

@@ -1,0 +1,5 @@
+[auth.email]
+enable_confirmations = false
+
+[functions.whatsapp-webhook]
+verify_jwt = false

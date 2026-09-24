@@ -1,0 +1,113 @@
+@import url('https://resource-static.bj.bcebos.com/fonts-skill/PlusJakartaSans_PlusJakartaSans[wght].ttf');
+
+/* stylelint-disable */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Temo-Thuo AI — Dieter Rams Functionalism × Blueprint Material Design System */
+/* Primary: #2D3E59 | Accent: #06B6D4 | Background: #0F172A */
+
+@layer base {
+  :root {
+    --radius: 0.25rem;
+
+    /* Dark base — blueprint dark surface */
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 220 32% 17%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary: #2D3E59 */
+    --primary: 214 34% 26%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: #334155 */
+    --secondary: 215 25% 27%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Muted: #2E374D */
+    --muted: 220 25% 24%;
+    --muted-foreground: 215 20% 65%;
+
+    /* Accent: #06B6D4 */
+    --accent: 192 91% 43%;
+    --accent-foreground: 222 47% 11%;
+
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Border: #475569 */
+    --border: 215 19% 35%;
+    --input: 215 19% 35%;
+    --ring: 192 91% 43%;
+
+    /* Charts */
+    --chart-1: 192 91% 43%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 0 72% 51%;
+    --chart-5: 270 68% 60%;
+
+    /* Sidebar = same dark surface */
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 192 91% 43%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 220 25% 24%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 19% 35%;
+    --sidebar-ring: 192 91% 43%;
+
+    /* Status tokens */
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+    --info: 192 91% 43%;
+
+    --shadow-card: 0 1px 3px 0 rgba(0,0,0,0.3), 0 1px 2px -1px rgba(0,0,0,0.2);
+    --shadow-hover: 0 4px 6px -1px rgba(0,0,0,0.3);
+  }
+
+  /* Light overrides kept minimal — app is dark-first */
+  .light {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 214 34% 26%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 215 25% 93%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 30% 94%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 192 91% 43%;
+    --accent-foreground: 222 47% 11%;
+    --border: 214 32% 87%;
+    --input: 214 32% 87%;
+    --ring: 192 91% 43%;
+    --sidebar-background: 214 34% 26%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 192 91% 43%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 215 25% 35%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 215 19% 40%;
+    --sidebar-ring: 192 91% 43%;
+  }
+
+}
+
+@layer base {
+  html { font-family: 'PlusJakartaSans', 'Plus Jakarta Sans', system-ui, sans-serif; }
+  * { scrollbar-width: thin; scrollbar-color: hsl(var(--border)) transparent; }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+}
