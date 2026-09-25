@@ -1,23 +1,59 @@
 import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
 
 var PORT = process.env.PORT || 3000;
 var VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || 'temothuo_webhook_2026';
 var SUPABASE_URL = 'https://zybkhpxsvxllurktldjv.supabase.co/functions/v1/whatsapp-webhook';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5YmtocHhzdnhsbHVya3RsZGp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg1MjEwOTYsImV4cCI6MjEwNDA5NzA5Nn0.M1jSVHhof9E1pC4JMlWxkx3xAn2wwRcR0Z1yY1Onu_Y';
 
+var DIST_DIR = path.resolve(process.cwd(), 'dist');
+
+var MIME_TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.mjs': 'application/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+  '.ttf': 'font/ttf'
+};
+
+function serveStatic(res, filePath) {
+  fs.readFile(filePath, function(err, data) {
+    if (err) {
+      // Fallback to index.html for React SPA client-side routes
+      var indexPath = path.join(DIST_DIR, 'index.html');
+      fs.readFile(indexPath, function(err2, indexData) {
+        if (err2) {
+          res.writeHead(404, { 'Content-Type': 'text/plain' });
+          res.end('Not Found');
+          return;
+        }
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+        res.end(indexData);
+      });
+      return;
+    }
+
+    var ext = path.extname(filePath).toLowerCase();
+    var contentType = MIME_TYPES[ext] || 'application/octet-stream';
+    res.writeHead(200, { 'Content-Type': contentType });
+    res.end(data);
+  });
+}
+
 var server = http.createServer(function(req, res) {
   var host = req.headers.host || 'localhost';
   var parsedUrl = new URL(req.url, 'http://' + host);
   var pathname = parsedUrl.pathname;
-
-  // Health check
-  if (req.method === 'GET') {
-    if (pathname === '/') {
-      res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end('Temo-Thuo AI WhatsApp Webhook Gateway is running!');
-      return;
-    }
-  }
 
   // 1. Meta Webhook Verification Handshake (GET /webhook)
   if (req.method === 'GET') {
@@ -78,10 +114,25 @@ var server = http.createServer(function(req, res) {
     }
   }
 
+  // 3. Serve Frontend Web Dashboard (HTML/CSS/JS)
+  if (req.method === 'GET') {
+    var safePath = path.normalize(pathname).replace(/^(\.\.[\/\\])+/, '');
+    var localPath = path.join(DIST_DIR, safePath);
+
+    fs.stat(localPath, function(err, stats) {
+      if (stats && stats.isFile()) {
+        serveStatic(res, localPath);
+      } else {
+        serveStatic(res, path.join(DIST_DIR, 'index.html'));
+      }
+    });
+    return;
+  }
+
   res.writeHead(404, { 'Content-Type': 'text/plain' });
   res.end('Not Found');
 });
 
 server.listen(PORT, function() {
-  console.log('Temo-Thuo AI Webhook Gateway listening on port ' + PORT);
+  console.log('Temo-Thuo Full-Stack Web + Webhook listening on port ' + PORT);
 });
